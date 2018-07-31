@@ -1,6 +1,12 @@
 #pragma once
+
 #include <mysql/mysql.h>
 #include <string>
+#include <vector>
+#include <iostream>
+
+using std::string;
+using std::vector;
 
 class MyDataBase
 {
@@ -14,19 +20,21 @@ public:
 	MyDataBase();
 	MyDataBase(MYSQL *mysql);
 	~MyDataBase();
-	void connect(const std::string host, const std::string user, const std::string password, 
-					const std::string database = "mysql", unsigned int port = 0, 
+	void connect(const string host, const string user, const string password, 
+					const string database = "mysql", unsigned int port = 0, 
 					const char *unix_socket = nullptr, unsigned long client_flag = 0);
 	void disconnect();
 	void showdb();
-	void createdb(const std::string &database);
-	void usedb(const std::string &database);
-	void deletedb(const std::string &database);
+	void createdb(const string &database);
+	void usedb(const string &database);
+	void deletedb(const string &database);
 	void showtb();
-	void createtb(const std::string &table, const std::string &elements);
-	void selectitem(const std::string &table, const std::string &value);
-	void insertitem(const std::string &table, const std::string &value);
-	void insertitem(const std::string &table, const std::string &value, const std::string &col);
-	void deleteitem(const std::string &table, const std::string &value);
-	void query(const std::string &command);
+	void createtb(const string &table, const string &elements);
+	vector<vector<string>> selectitem(const string &table, const string &value);
+	vector<vector<string>> selectitem(const string &table, const string &value, const string &limits);
+	void insertitem(const string &table, const string &value);
+	void insertitem(const string &table, const string &value, const string &col);
+	void deleteitem(const string &table, const string &value);
+	void updateitem(const string &table, const string &value, const string &limits);
+	void query(const string &command);
 };

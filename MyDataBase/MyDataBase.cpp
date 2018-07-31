@@ -1,5 +1,5 @@
 #include "MyDataBase.h"
-#include <iostream>
+
 using namespace std;
 
 void MyDataBase::disconnect() {
@@ -101,14 +101,48 @@ void MyDataBase::createtb(const string &table, const string &elements) {
 	cout << "create table success!" << endl;
 }
 
-void MyDataBase::selectitem(const string &table, const string &value) {
+vector<vector<string>> MyDataBase::selectitem(const string &table, const string &value) {
 	string str = "select " + value + " from " + table;
 	cout << str << endl;
 	if (mysql_query(sql, str.c_str())) {
 		cout << "select error!" << endl;
-		return;
+		return {};
 	}
-	showres();
+
+	vector<vector<string>> ret;
+	res = mysql_use_result(sql);
+	while ( (row = mysql_fetch_row(res)) != nullptr ) {
+		int i = 0;
+		vector<string> temp;
+		while (i < mysql_num_fields(res))
+			temp.push_back(row[i++]);
+		ret.push_back(temp);
+	}
+	mysql_free_result(res);
+	res = nullptr;
+	return ret;
+}
+
+vector<vector<string>> MyDataBase::selectitem(const string &table, const string &value, const string &limits) {
+	string str = "select " + value + " from " + table + " where " + limits;
+	cout << str << endl;
+	if (mysql_query(sql, str.c_str())) {
+		cout << "select error!" << endl;
+		return {};
+	}
+
+	vector<vector<string>> ret;
+	res = mysql_use_result(sql);
+	while ( (row = mysql_fetch_row(res)) != nullptr ) {
+		int i = 0;
+		vector<string> temp;
+		while (i < mysql_num_fields(res))
+			temp.push_back(row[i++]);
+		ret.push_back(temp);
+	}
+	mysql_free_result(res);
+	res = nullptr;
+	return ret;
 }
 
 void MyDataBase::showres() {
@@ -154,6 +188,18 @@ void MyDataBase::deleteitem(const string &table, const string &value) {
 	}
 	cout << "delete success!" << endl;
 }
+
+void MyDataBase::updateitem(const string &table, const string &value, const string &limits) {
+	string str = "update " + table + " set " + value + " where " + limits;
+	cout << str << endl;
+	if (mysql_query(sql, str.c_str())) {
+		cout << "delete error!" << endl;
+		return;
+	}
+	cout << "update success!" << endl;
+}
+
+
 
 void MyDataBase::query(const string &command) {
 	if (mysql_query(sql, command.c_str())) {
