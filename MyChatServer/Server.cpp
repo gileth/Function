@@ -4,7 +4,7 @@ static pthread_t tid[MAX_NUM];
 static int fd[MAX_NUM];
 static sockaddr_in sock[MAX_NUM];
 static string clientname[MAX_NUM];
-static pthread_rwlock_t rwlock = PTHREAD_RWLOCK_INITIALIZER;
+static pthread_mutex_t mv = PTHREAD_MUTEX_INITIALIZER;
 static sockaddr_in serveraddr;
 static int connect_type;
 static int serverfd;
@@ -84,7 +84,7 @@ void Run() {
 		sockaddr_in clientaddr;
 		int clientfd = Accept(clientaddr);
 		int i;
-		pthread_rwlock_wrlock(&rwlock);
+		pthread_mutex_lock(&mv);
 		for (i = 0; i < MAX_NUM; ++i)
 		{
 			if (fd[i] == 0)
@@ -95,7 +95,7 @@ void Run() {
 				break;
 			}
 		}
-		pthread_rwlock_unlock(&rwlock);
+		pthread_mutex_unlock(&mv);
 
 		if (i == MAX_NUM) {
 			char msg[1024] = "The room is full!";
@@ -123,7 +123,7 @@ void* Fun(void *arg) {
 		if (len > 0) {
 			printf("receive from %d: %s\n", ntohs(sock[idx].sin_port), buff);
 			sprintf(msg, "%sreceive from %s: %s\n", ctime(&timep), clientname[idx].c_str(), buff);
-			pthread_rwlock_rdlock(&rwlock);
+			pthread_mutex_lock(&mv);
 			for (int i = 0; i < MAX_NUM; ++i)
 			{
 				if ((fd[i] != 0) && (i != idx))
@@ -131,15 +131,15 @@ void* Fun(void *arg) {
 					write(fd[i], msg, 1024);
 				}
 			}
-			pthread_rwlock_unlock(&rwlock);
+			pthread_mutex_unlock(&mv);
 		}
 		else {
-			pthread_rwlock_wrlock(&rwlock);
+			pthread_mutex_lock(&mv);
 			close(fd[idx]);
 			fd[idx] = 0;
 			clientname[idx] = "";
 			memset(&sock[idx], 0, sizeof(sock[idx]));
-			pthread_rwlock_unlock(&rwlock);
+			pthread_mutex_unlock(&mv);
 			break;
 		}
 		usleep(1000);
