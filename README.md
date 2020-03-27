@@ -109,19 +109,19 @@ deleteClientStartOptions()**
 * 接口设计
 **
 // 根据快捷方式类型和搜索字符串得到快捷方式资源(注：只有游戏快捷才有搜索选项)<br />
-getResourceShortCutByType(ShortCutsSearchRequest *pRequest)
-// 添加IE快捷方式到资源
-addIEShortCutToResource(ShortCutInfo)
-// 修改资源中的IE快捷方式
-modifyIEShortCutToResource(ShortCutInfo)
-// 删除资源中的IE快捷方式
-deleteIEShortCutToResource(ShortCutInfo)
-// 将快捷方式列表添加到指定的组
-addShortCutToGroup(ShortCutForGroup[])
-// 根据组标识得到快捷方式列表
-getShortCutByGroup(wchar_t* groupIdentifie)
-// 删除指定组中的快捷方式
-deleteShortCutToGroup(ShortCutForGroup[])
+getResourceShortCutByType(ShortCutsSearchRequest *pRequest)<br />
+// 添加IE快捷方式到资源<br />
+addIEShortCutToResource(ShortCutInfo)<br />
+// 修改资源中的IE快捷方式<br />
+modifyIEShortCutToResource(ShortCutInfo)<br />
+// 删除资源中的IE快捷方式<br />
+deleteIEShortCutToResource(ShortCutInfo)<br />
+// 将快捷方式列表添加到指定的组<br />
+addShortCutToGroup(ShortCutForGroup[])<br />
+// 根据组标识得到快捷方式列表<br />
+getShortCutByGroup(wchar_t* groupIdentifie)<br />
+// 删除指定组中的快捷方式<br />
+deleteShortCutToGroup(ShortCutForGroup[])<br />
 ** 
 </hr>
 
