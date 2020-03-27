@@ -108,6 +108,7 @@ deleteClientStartOptions()**
 (3) 实现思路
 * 接口设计
 **
+
 // 根据快捷方式类型和搜索字符串得到快捷方式资源(注：只有游戏快捷才有搜索选项)
 getResourceShortCutByType(ShortCutsSearchRequest *pRequest)
 // 添加IE快捷方式到资源
